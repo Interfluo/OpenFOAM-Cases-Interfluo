@@ -1,0 +1,101 @@
+  
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  dev                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#includeEtc "caseDicts/mesh/generation/snappyHexMeshDict.cfg"
+
+castellatedMesh on;
+snap            on;
+addLayers       off;
+
+geometry
+{
+    cybertruck
+    {
+        type triSurfaceMesh;
+        file "cybertruck.obj";
+    }
+};
+
+castellatedMeshControls
+{
+    features
+    (
+//      { file "CAD.eMesh"; level 1; }
+    );
+
+    refinementSurfaces
+    {
+        cybertruck
+        {
+            level (3 3);
+        }
+    }
+
+    refinementRegions
+    {
+
+    }
+
+    locationInMesh (0.1 0.5 -3.0); // Offset from (0 0 0) to avoid
+                                     // coinciding with face or edge
+    nCellsBetweenLevels 20;
+}
+
+snapControls
+{
+//	explicitFeatureSnap    true;
+//	implicitFeatureSnap    true;
+}
+
+addLayersControls
+{
+    layers
+    {
+        "cybertruck.*"
+        {
+            nSurfaceLayers 4;
+        } 
+        bottom
+        {
+            nSurfaceLayers 4;
+        } 
+    }
+
+    relativeSizes       false; // false, usually with firstLayerThickness
+    expansionRatio      1.2;
+//    finalLayerThickness 0.5;
+    minThickness        1e-5;
+    firstLayerThickness 0.001;
+
+//  maxThicknessToMedialRatio 0.6;
+}
+
+meshQualityControls
+{
+    minTetQuality -1e+30;
+}
+
+/*writeFlags
+(
+//    scalarLevels
+    layerSets
+    layerFields
+); */
+
+mergeTolerance 1e-6;
+
+// ************************************************************************* //

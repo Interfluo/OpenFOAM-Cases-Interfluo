@@ -1,0 +1,17 @@
+# encoding: utf-8
+# 2020 R2
+SetScriptVersion(Version="20.2.221")
+system1 = GetSystem(Name="SYS 1")
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.SetFile(FilePath="C:/Users/james/Desktop/2D Nozzle/video/domain_P_large.x_t")
+mesh1 = system1.GetContainer(ComponentName="Mesh")
+mesh1.Edit()
+mesh1.Exit()
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+geometryComponent1.Reset()
+geometry1.SetFile(FilePath="C:/Users/james/Desktop/2D Nozzle/video/domain_P_large.x_t")
+meshComponent1 = system1.GetComponent(Name="Mesh")
+meshComponent1.Refresh()
+mesh1.Edit()
+mesh1.Exit()
+Save(Overwrite=True)

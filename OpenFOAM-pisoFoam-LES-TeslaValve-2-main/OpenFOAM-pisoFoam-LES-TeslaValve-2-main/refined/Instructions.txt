@@ -1,0 +1,13 @@
+Instructions
+
+- unzip the files into the appropriate directory
+
+to run in parallel
+- "decomposePar" - decomposes the case into 6 sub-domains
+- "mpirun -np 6 pisoFoam -parallel" - run the case on 6 cores
+
+to run as a serial case
+- "pisoFoam" - run on single core
+
+save case
+- "touch open.foam"

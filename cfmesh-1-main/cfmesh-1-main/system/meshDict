@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          |
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         |
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version   2.0;
+    format    ascii;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+surfaceFile "geometry.stl";
+
+minCellSize 0.05;
+
+maxCellSize 0.05;
+
+boundaryCellSize 0.05;
+
+localRefinement
+{
+    AssimpScene
+    {
+        cellSize 0.003125;
+    }
+
+}
+
+objectRefinements
+{
+	box
+	{
+		type	box;
+		cellSize	0.0125;
+		centre	(0.05 0.1 0.05);
+		lengthX	0.5;
+		lengthY	0.2;
+		lengthZ	1.0;
+	}
+}
+
+boundaryLayers
+{
+	patchBoundaryLayers
+	{
+		"AssimpScene"
+		{
+			nLayers 10;
+			thicknessRatio 1;
+			maxFirstLayerThickness 0.0003125;
+		}
+	}
+}
+
+renameBoundary
+{
+    defaultType     wall;
+
+    newPatchNames
+    {
+        "zMin" { newName outlet  ; type  patch; }
+        "zMax" { newName inlet ; type  patch; }
+        "yMax" { newName top    ; type  wall; inGroups	1(wall); }
+        "yMin" { newName bottom ; type  wall; inGroups	1(wall); }
+        "xMax" { newName side1   ; type  wall; inGroups	1(wall); }
+        "xMin" { newName side2   ; type  wall; inGroups	1(wall); }
+		"AssimpScene" { newName obstacle   ; type  wall; inGroups	1(wall); }
+    }
+}
+
+// ************************************************************************* //

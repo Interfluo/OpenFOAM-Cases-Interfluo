@@ -1,0 +1,80 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GOALS:
+========================================================================================================================
+Create a basic 2D CFD solver
+Specs:
+    - Finite Volume Method (FVM): spatial discritization
+    - Explicit time : temporal discritization
+    - PISO: pressure velocity coupling
+    - LES: turbulence model
+    - Automatic Structured Mesh Generation (Similar to SnappyHexMesh) and Refinement
+    - incompressible, no heat, no gravity
+    - velocity inlet & pressure outlet (2D wind tunnel)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Pressure-Velocity Coupling
+from: https://skill-lync.freshdesk.com/support/solutions/articles/43000573012-understanding-simple-and-piso#:~:text=The%20PISO%20algorithm%20was%20developed,one%20corrector%20step%20in%20SIMPLE.
+========================================================================================================================
+SIMPLE: Semi-Implicit Method for Pressure Linked Equations
+------------------------------------------------------------------------------------------------------------------------
+-The SIMPLE algorithm works on the pressure correction method and iteratively solves for the velocity field as mentioned
+ in the pressure correction section.
+-The first step where the pressure is guessed is termed as the predictor step and the next step where the corrections
+ are applied is termed as the corrector step.
+-In the SIMPLE algorithm, there is one predictor step and one corrector step in each iteration. This is iteratively run
+ until the average change over multiple iterations is less than a tolerance value. It is to be noted here that the
+ SIMPLE algorithm is used for steady state problems as it just iteratively solves for the steady state domain.
+-The pressure at step n+1 is given by pn+1 = p**  + apn
+-where a is an under-relaxation factor whose value can be set from 0 to 1 such that a stable solution is obtained. By
+ the same ideology, an under-relaxation factor exists for the velocity terms as well to control the speed at which the
+ solution is obtained and to increase the stability of the solution.
+-The superscript n does not denote time, but just the current iteration the solution is at. The solution may look vastly
+ different comparing the steady and unsteady solutions, but the end result will be the same.
+========================================================================================================================
+PISO: Pressure Implicit with Splitting of Operator
+------------------------------------------------------------------------------------------------------------------------
+-PISO stands for Pressure Implicit with Splitting of Operator, and is predominantly used for unsteady simulations, but
+ has now found use in steady solutions as well.
+-The operation of PISO and SIMPLE are similar owing to the fact that both the algorithms use the same pressure
+ correction method. The PISO algorithm was developed to be faster than SIMPLE and allow for larger time steps without
+ affecting the solution.
+-The difference between SIMPLE and PISO is the fact that PISO uses 2 or more corrector steps as opposed to the one
+ corrector step in SIMPLE. Since SIMPLE only used one corrector step, it didn’t necessarily satisfy continuity and was
+ prone to instabilities. This was overcome by using multiple corrector steps for more robustness and accuracy in PISO.
+========================================================================================================================
+Conclusion:
+------------------------------------------------------------------------------------------------------------------------
+-The pressure correction method should give an idea as to how the initial conditions affect the solution. They are the
+ guess value from which the solution starts. A good guess means a faster solution is obtained. This is especially useful
+ for steady state solutions.
+-The fact that PISO runs multiple iterations and provides a more stable solution is just cause to use the PISO algorithm
+ for steady state simulations with a higher time step that the algorithm allows for. Most solvers calculate the time and
+ time step even for a steady state simulation using the PISO algorithm showing that the solution is just an unsteady
+ simulation with large time steps.
+-The PISO algorithm is also proven to have a lower CPU time than the SIMPLE algorithm, but that doesn't mean PISO can be
+ used for all cases, the SIMPLE algorithm is shown to provide better results for heat transfer problems.
+-This article is meant to shed some light on how the algorithms function and give a basic overview of the function and
+ is by no means the final step. This is just an introduction, for more information, the papers by Patankar and Spalding
+ for SIMPLE and Issa.R for the PISO algorithm can be referred. Furthermore, information regarding how the grid is chosen
+ and discretisation techniques, any CFD text book can be referred.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OpenFOAM AMR time-line
+
+4/8
+- able to generate a basic 2d mesh (quads, rectangular domain)
+- can refine mesh given an abstract scalar field (this will be velocity or vorticity for the actual code)
+- have nodal coordinate and connectivity data
+
+4/9
+- develop a program to interpret GMSH .msh files to be able to reverse engineer a mesh file formatting program
+
+4/10
+- start looking into creating a program for managing the simulation files for OpenFOAM
+
+.
+.
+.
+
++ a bunch more
