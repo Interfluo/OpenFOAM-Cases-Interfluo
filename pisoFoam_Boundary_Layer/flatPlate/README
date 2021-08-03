@@ -1,0 +1,12 @@
+#Commands to run the case:
+
+##serial run
+- blockMesh
+- pisoFoam
+- touch open.foam
+
+##parallel run
+- blockMesh
+- decomposePar
+- mpirun -np 6 pisoFoam -parallel
+- touch open.foam
