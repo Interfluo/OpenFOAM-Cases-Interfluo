@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1906                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh   dynamicRefineFvMesh;
+
+
+dynamicRefineFvMeshCoeffs
+{
+    refineInterval  1;
+
+    field           s;
+
+    lowerRefineLevel 0.1;
+    upperRefineLevel 0.9;
+
+    unrefineLevel   10;
+
+    nBufferLayers   2;
+
+    maxRefinement   3;
+
+    maxCells        25000000;
+
+    correctFluxes
+    (
+        (phi none)
+        (nHatf none)
+        (rhoPhi none)
+        (ghf none)
+    );
+
+    dumpLevel       true;
+}
+
+
+// ************************************************************************* //
