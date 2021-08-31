@@ -1,0 +1,80 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          |
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         |
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version   2.0;
+    format    ascii;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+surfaceFile "geometry.stl";
+
+minCellSize 0.01;
+
+maxCellSize 0.01;
+
+boundaryCellSize 0.01;
+
+localRefinement
+{
+    patch0
+    {
+        cellSize 0.0003125;
+    }
+
+}
+
+objectRefinements
+{
+	box
+	{
+		type	box;
+		cellSize	0.00125;
+		centre	(0.025 0.01 0.05);
+		lengthX	.075;
+		lengthY	.075;
+		lengthZ	.15;
+	}
+}
+
+boundaryLayers
+{
+	patchBoundaryLayers
+	{
+		"patch0"
+		{
+			nLayers 10;
+			thicknessRatio 1;
+			maxFirstLayerThickness 0.000125;
+		}
+	}
+}
+
+
+renameBoundary
+{
+    defaultType     wall;
+
+    newPatchNames
+    {
+        "zMin" { newName inlet  ; type  patch; }
+        "zMax" { newName outlet ; type  patch; }
+        "yMax" { newName outlet ; type  patch; }
+        "yMin" { newName inlet	; type  patch; }
+        "xMax" { newName sides   ; type  wall; inGroups	1(wall); }
+        "xMin" { newName sides   ; type  wall; inGroups	1(wall); }
+		"patch0" { newName wing ; type  wall; inGroups	1(wall); }
+    }
+}
+
+// ************************************************************************* //
