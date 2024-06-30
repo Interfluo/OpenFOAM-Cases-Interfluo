@@ -53,30 +53,36 @@ maxDeltaT       1;
 
 functions
 {
-	#includeFunc scalarTransport
+    scalarTransport
+    {
+        type            scalarTransport;
+        functionObjectLibs ("libscalarTransportFunctionObjects.so");
+        field           <fieldName>;  // Adicione o nome do campo correto para a simulação
+    }
 
-	/*wallShearStress
+    /*wallShearStress
     {
         type            wallShearStress;
         libs            (fieldFunctionObjects);
         writeControl    writeTime;
         patches         (cylinder);
     }*/
-	
-	gradP
-	{
-		type			grad;
-		libs			(fieldFunctionObjects);
-		field 			p;
-		writeControl	writeTime;
-	}
-	
-	gradU
-	{
-		type			grad;
-		libs			(fieldFunctionObjects);
-		field 			U;
-		writeControl	writeTime;
-	}
+
+    gradP
+    {
+            type                    grad;
+            libs                    (fieldFunctionObjects);
+            field                   p;
+            writeControl    writeTime;
+    }
+
+    gradU
+    {
+            type                    grad;
+            libs                    (fieldFunctionObjects);
+            field                   U;
+            writeControl    writeTime;
+    }
 }
+
 // ************************************************************************* //
